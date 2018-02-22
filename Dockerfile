@@ -23,7 +23,7 @@ RUN gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv A3FAA648D9223EDA && \
 RUN sed -i 's/http:\/\/archive.ubuntu.com\/ubuntu\//http:\/\/ubuntu.ethz.ch\/ubuntu\//' /etc/apt/sources.list
 # update repos and get fastest repo
 RUN apt-get update && \
-    apt-get upgrade -y
+    apt-get upgrade -qq -y
 
 # Set the timezone and postfix mail
 RUN echo "Europe/Zurich" | tee /etc/timezone && \
@@ -33,7 +33,7 @@ RUN echo "Europe/Zurich" | tee /etc/timezone && \
     echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections  
 
 # install needed packages part 1
-RUN apt-get install -y --force-yes \
+RUN apt-get install -qq -y --force-yes -o=Dpkg::Use-Pty=0 \
     supervisor \
     bash-completion \
     bc \
@@ -65,11 +65,7 @@ RUN apt-get install -y --force-yes \
     libtevent0 \
     libcv-dev \
     libcvaux-dev \
-    libhighgui-dev
-
-
-# install needed packages part 2
-RUN apt-get install -y \
+    libhighgui-dev \
     perl-doc \
     libapache2-mod-perl2 \
     libapache2-reload-perl \
@@ -124,8 +120,6 @@ RUN apt-get install -y \
     mysql-client \
     varnish \
     beanstalkd
-
-
 
 
 # add java ppa repo
