@@ -209,7 +209,7 @@ RUN echo 'if [ -f /etc/bash_completion ] && ! shopt -oq posix; then' >> /root/.b
     echo '    . /etc/bash_completion' >> /root/.bashrc && \
     echo 'fi' >> /root/.bashrc
 
-COPY su-exec/su-exec /sbin
+COPY ./su-exec/su-exec /sbin
 
 COPY ./start_services.sh /root/
 # RUN chmod u+x /root/start_services.sh
