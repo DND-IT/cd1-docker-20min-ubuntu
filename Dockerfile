@@ -7,7 +7,21 @@ LABEL maintainer="Christian Jürges, christian.juerges@20minuten.ch"
 
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
+ENV LANG en_US.UTF-8
 ENV TERM linux
+CMD ['/bin/bash']
+
+
+# Set the locale for UTF-8 support
+RUN locale-gen de_DE.UTF-8 && \
+    locale-gen de_DE && \
+    locale-gen de_CH.UTF-8 && \
+    locale-gen de_CH && \
+    locale-gen en_US.UTF-8 && \
+    locale-gen en_US && \
+    update-locale LANG=de_CH
+
+
 
 # taken from https://github.com/fstab/docker-ubuntu/blob/master/Dockerfile
 
@@ -17,6 +31,11 @@ RUN echo "deb http://packages.couchbase.com/ubuntu trusty trusty/main" > /etc/ap
 # get repo key to install oracle java stuff
 RUN gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv A3FAA648D9223EDA && \
     gpg --export --armor A3FAA648D9223EDA | sudo apt-key add -
+
+# get repo key for node.js
+RUN gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv 1655A0AB68576280 && \
+    gpg --export --armor 1655A0AB68576280 | sudo apt-key add -
+
 
 # RUN sed -i -e 's/http:\/\/us.archive/mirror:\/\/mirrors/' -e 's/\/ubuntu\//\/mirrors.txt/' /etc/apt/sources.list
 # http://ubuntu.ethz.ch/ubuntu/
@@ -31,6 +50,15 @@ RUN echo "Europe/Zurich" | tee /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata && \
     echo "postfix postfix/mailname string 20-local.ch" | debconf-set-selections   && \
     echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections  
+
+# add apt https support
+RUN apt-get install -qq -y --force-yes -o=Dpkg::Use-Pty=0 \
+    apt-transport-https
+
+# add node js repos
+RUN echo 'deb https://deb.nodesource.com/node_7.x trusty main\ndeb-src https://deb.nodesource.com/node_7.x trusty main'\
+    > /etc/apt/sources.list.d/nodesource.list
+
 
 # install needed packages part 1
 RUN apt-get install -qq -y --force-yes -o=Dpkg::Use-Pty=0 \
@@ -119,7 +147,9 @@ RUN apt-get install -qq -y --force-yes -o=Dpkg::Use-Pty=0 \
     pkg-config \
     mysql-client \
     varnish \
-    beanstalkd
+    beanstalkd \
+    nodejs \
+    ruby-dev
 
 
 # add java ppa repo
@@ -133,6 +163,9 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 # install more perl Modules via CPAN (takes a long time to compile all things)
 RUN ln -s /usr/bin/make /usr/bin/gmake
 ENV PERL_MM_USE_DEFAULT 1
+
+# install needed stuff for grunt
+RUN gem install compass
 
 # install cpan
 RUN apt-get -y install cpanminus
@@ -173,14 +206,6 @@ RUN rm /etc/default/beanstalkd && \
 
 
 
-# Set the locale for UTF-8 support
-RUN locale-gen de_DE.UTF-8 && \
-    locale-gen de_DE && \
-    locale-gen de_CH.UTF-8 && \
-    locale-gen de_CH && \
-    locale-gen en_US.UTF-8 && \
-    locale-gen en_US && \
-    update-locale LANG=de_CH
 
 # enabled apache modules and enable apache mpm_prefork mode
 RUN a2enmod headers expires cgi && \
