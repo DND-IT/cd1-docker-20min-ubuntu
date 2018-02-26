@@ -60,7 +60,8 @@ RUN apt-get install -qq -y --force-yes \
 # add node js repos
 # RUN echo 'deb https://deb.nodesource.com/node_7.x trusty main\ndeb-src https://deb.nodesource.com/node_7.x trusty main'\
 #     > /etc/apt/sources.list.d/nodesource.list
-RUN curl -sL https://deb.nodesource.com/setup_7.x | curl -sL https://deb.nodesource.com/setup_7.x && \
+# wget -qO- https://deb.nodesource.com/setup_7.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - && \
     apt-get install -qq -y --force-yes nodejs
 
 # install needed packages part 1
