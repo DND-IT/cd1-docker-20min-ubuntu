@@ -229,6 +229,8 @@ RUN echo 'if [ -f /etc/bash_completion ] && ! shopt -oq posix; then' >> /root/.b
     echo '    . /etc/bash_completion' >> /root/.bashrc && \
     echo 'fi' >> /root/.bashrc
 
+RUN echo 'export PATH=/twentymin/sites/grunt/sites-2010/node_modules/.bin:$PATH' >> /etc/bash.bashrc
+
 COPY ./su-exec/su-exec /sbin
 
 COPY ./start_services.sh /root/
