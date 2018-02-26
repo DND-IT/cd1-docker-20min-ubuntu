@@ -52,13 +52,16 @@ RUN echo "Europe/Zurich" | tee /etc/timezone && \
     echo "postfix postfix/main_mailer_type string 'Local only'" | debconf-set-selections  
 
 # add apt https support
-RUN apt-get install -qq -y --force-yes -o=Dpkg::Use-Pty=0 \
-    apt-transport-https
+RUN apt-get install -qq -y --force-yes \
+    apt-transport-https \
+    curl \
+    wget
 
 # add node js repos
-RUN echo 'deb https://deb.nodesource.com/node_7.x trusty main\ndeb-src https://deb.nodesource.com/node_7.x trusty main'\
-    > /etc/apt/sources.list.d/nodesource.list
-
+# RUN echo 'deb https://deb.nodesource.com/node_7.x trusty main\ndeb-src https://deb.nodesource.com/node_7.x trusty main'\
+#     > /etc/apt/sources.list.d/nodesource.list
+RUN curl -sL https://deb.nodesource.com/setup_7.x | curl -sL https://deb.nodesource.com/setup_7.x && \
+    apt-get install -qq -y --force-yes nodejs
 
 # install needed packages part 1
 RUN apt-get install -qq -y --force-yes -o=Dpkg::Use-Pty=0 \
@@ -79,8 +82,6 @@ RUN apt-get install -qq -y --force-yes -o=Dpkg::Use-Pty=0 \
     unzip \
     vim \
     sysstat \
-    wget \
-    curl \
     build-essential \
     software-properties-common \
     python-software-properties \
@@ -148,7 +149,6 @@ RUN apt-get install -qq -y --force-yes -o=Dpkg::Use-Pty=0 \
     mysql-client \
     varnish \
     beanstalkd \
-    nodejs \
     ruby-dev
 
 
