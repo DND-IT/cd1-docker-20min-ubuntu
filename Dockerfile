@@ -9,6 +9,8 @@ ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG en_US.UTF-8
 ENV TERM linux
+ENV 20MIN_RUNS_ON_DOCKER 1
+
 CMD ['/bin/bash']
 
 
