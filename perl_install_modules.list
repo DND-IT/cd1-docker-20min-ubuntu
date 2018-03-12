@@ -69,3 +69,5 @@ Unicode::String
 WebService::Bitly
 XML::Simple
 YAML
+Devel::Camelcadedb
+
