@@ -70,4 +70,4 @@ WebService::Bitly
 XML::Simple
 YAML
 Devel::Camelcadedb
-
+Digest::xxHash
