@@ -186,7 +186,8 @@ RUN /root/cpan.sh
 
 # create needed directories
 RUN mkdir -p /twentymin/webcache/anon && \
-    chown -R www-data.www-data /twentymin/webcache
+    chown -R www-data.www-data /twentymin/webcache && \
+    mkdir -p /var/log/daemons
 
 # create some symlinks needed for perlbal and perlbal-compator
 RUN adduser --system --disabled-password --shell /bin/false perlbal && \ 
