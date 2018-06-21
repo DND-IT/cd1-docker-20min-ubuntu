@@ -71,3 +71,5 @@ XML::Simple
 YAML
 Devel::Camelcadedb
 Digest::xxHash
+Log::Log4perl
+AppConfig
