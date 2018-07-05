@@ -244,6 +244,8 @@ RUN echo 'export PATH=/twentymin/sites/grunt/sites-2010/node_modules/.bin:$PATH'
 
 COPY ./su-exec/su-exec /sbin
 
+RUN sed -i 's/SendEnv LANG LC_\*/# SendEnv LANG LC_\*/'  /etc/ssh/ssh_config
+
 COPY ./start_services.sh /root/
 # RUN chmod u+x /root/start_services.sh
 # Define default command for the entrypoint
