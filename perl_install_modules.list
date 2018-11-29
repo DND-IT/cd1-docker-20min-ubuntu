@@ -74,3 +74,4 @@ Digest::xxHash
 Log::Log4perl
 AppConfig
 SQL::Abstract
+TOML::Parser;
